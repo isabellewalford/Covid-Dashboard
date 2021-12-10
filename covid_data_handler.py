@@ -4,6 +4,7 @@ Module handles all covid data and scheduling.
 """
 
 # Imported Modules
+from typing import List
 from uk_covid19 import Cov19API
 import datetime 
 import time
@@ -66,9 +67,12 @@ def covid_API_request(location = 'Exeter', location_type = 'ltla') -> dict:
     Requests data and from the official covid API and ouputs a dictionary.
 
     Arguments:
-    location -- location of the data that is to be requested. default is Exeter
+    location -- location of the data that is to be requested. Default is Exeter
     location_type -- the type of area input into the loaction argument, can be ltla, utla and nation.
-    default is ltla which is the location type for exeter.
+    Default is ltla which is the location type for exeter.
+
+    Returns:
+    dict -- dictionary of covid data
     """
 
     # Defines where the data is from 
@@ -89,12 +93,15 @@ def covid_API_request(location = 'Exeter', location_type = 'ltla') -> dict:
     data = api.get_json()
     return data
 
-def process_json_data(covid_API_data) -> int:
+def process_json_data(covid_API_data) -> list:
     """
     Processes the data that is output by the covid API function returning a list of values.
 
     Arguments:
     covid_API_data -- data that is formatted as a json file from the covid API
+
+    Returns:
+    list - list of 3 integer values: last7days_cases, hospitalCases, cumDeaths28DaysByPublishDate
     """
 
     list = []
@@ -129,6 +136,9 @@ def find_difference(time)-> int:
 
     Arguments:
     time -- any time in the format hh:mm 
+
+    Returns:
+    int -- returns the time difference between a given time and the current time
     """
 
     current_time = datetime.datetime.now()
@@ -142,28 +152,51 @@ def find_difference(time)-> int:
         difference = difference + 24*60*60
     return difference
 
-def remove_dict(dict, updates):
-    name = dict['title']
-    for i in range(len(updates)):
-        if updates[i]['title'] == name:
-                del updates[i]
-                break
-    return updates
+def remove_dict(dict, list) -> list:
+    """
+    removes a dictionary from a given list
 
-def add_update(each):
-    each['scheduler'] == True
+    Arguments:
+    dict -- an dictionary
+    list -- any list containing the dictionary
+
+    Returns:
+    int -- returns the time difference between a given time and the current time
+    """
+    name = dict['title']
+    for i, each in enumerate(list):
+        if each['title'] == name:
+                del list[i]
+                break
+    return list
+
+def add_update(dict)-> list:
+    """
+    Functon changes adds update to the list of updates to be scheduled 
+
+    Arguments:
+    dict -- dictionary of information for a scheduled update
+
+    Returns:
+    list -- list of scheduled updates
+    """
+    dict['scheduler'] == True
     print('update added')
-    updates.append(each)
+    updates.append(dict)
+    return updates
         
 def schedule_covid_updates(update_interval,update_name)-> list:
     global updates,news,local_data,national_data
     """
-    schedules events based on the data input into a web server
+    Schedules events based on the data input into a web server
 
     Arguments:
     update_interval -- difference
     update_name -- list of dictionaries containing data on what kind of update, 
     the time difference and whether it should be repeated.
+
+    Returns:
+    list -- list of any scheduled updates
     """
 
     for i, each in enumerate(update_name):
@@ -183,9 +216,9 @@ def schedule_covid_updates(update_interval,update_name)-> list:
                 print('news scheduled')
             else:
                 del update_name[i]
-            
             e1 = s.enter(update_interval,1,remove_dict,(each,updates))
             each['scheduler']=False
+
             if each['repeat'] == 'repeat':
                 print('repeat scheduled')
                 e1 = s.enter(24*60*60*60,1,add_update,each)
