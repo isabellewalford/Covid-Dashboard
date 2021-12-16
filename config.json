@@ -1,5 +1,6 @@
 {
-    "API_KEY":"",
+    "API_KEY":"<api key>",
     "local_area":"Exeter",
+    "area_type":"ltla",
     "national_area":"England"
 }

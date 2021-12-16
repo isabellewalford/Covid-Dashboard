@@ -1,4 +1,5 @@
-from covid_data_handler import parse_csv_data
+import pytest
+from covid_data_handler import parse_csv_data, update_data
 from covid_data_handler import process_covid_csv_data
 from covid_data_handler import covid_API_request
 from covid_data_handler import schedule_covid_updates
@@ -21,3 +22,7 @@ def test_covid_API_request():
 
 def test_schedule_covid_updates():
     schedule_covid_updates(update_interval=10, update_name='update test')
+
+def test_update_data():
+    data = update_data()
+    assert len(data) == 2

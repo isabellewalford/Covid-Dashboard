@@ -1,26 +1,28 @@
 """
 Functionality:
-Module renders the html template, 
+Module renders the html template,
 uses other modules to process data and schedule updates for the data,
 uses requests module to get data from the user and update the appropriate structure.
 """
 
 #Imports
-import sched
-import time
+import logging
 from flask import Flask, request, render_template, Markup
 from covid_news_handling import update_news, add_read_more
 from covid_data_handler import update_data, find_difference
 from covid_data_handler import schedule_covid_updates
+from covid_data_handler import s as data_s
 from global_var import updates, news, local_data, national_data
+
 
 #Variables
 app = Flask(__name__)
 news = update_news()
 news = add_read_more(news)
 local_data,national_data = update_data()
-s = sched.scheduler(time.time,time.sleep)
 
+#Logging
+logging.basicConfig(level = logging.INFO, filename='dashboard.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 @app.route('/')
 def home()-> str:
@@ -34,9 +36,9 @@ def home()-> str:
         local_7day_infections = local_data[0],
         nation_location = Markup('<b>England</b>'),
         national_7day_infections = national_data[0],
-        hospital_cases = 'Hospital Cases:'+str(national_data[1]),
-        deaths_total = 'Deaths:'+str(national_data[2]),
-        news_articles = news[0:3],
+        hospital_cases = Markup('<b>Hospital Cases:</b>')+str(national_data[1]),
+        deaths_total = Markup('<b>Deaths:</b>')+ str(national_data[2]),
+        news_articles = news[0:4],
         image = 'me_and_olivia.jpg',
         updates = updates
         )
@@ -47,14 +49,14 @@ def index()-> str:
     Runs any scheduled events, takes user inputs and
     adds it to the correct data structure or processes it to give an ouput.
     """
-    s.run(blocking=False)
-    schedule_covid_updates(0,updates)
 
+    data_s.run(blocking=False)
     if request.args.get('notif'):
         news_story = request.args.get('notif')
         for i, each in enumerate(news):
             if each['title'] == news_story:
                 del news[i]
+                logging.info('News removed')
                 break
 
     if request.args.get('two'):
@@ -71,23 +73,28 @@ def index()-> str:
             'data': data_update,
             'news': news_update,
             'repeat': repeat,
-            'scheduler':True
+            'scheduler':True,
+            'event': []
         }
         updates.append(name)
+        logging.debug('Updated appended to list.')
+
+    schedule_covid_updates(0,updates)
+    logging.debug('updates should now be scheduled')
 
     if request.args.get('update_item'):
         item = request.args.get('update_item')
         for i, each in enumerate(updates):
             if each['title'] == item:
-                s.cancel(each['content'])
+                for event in each['event']:
+                    try:
+                        data_s.cancel(event)
+                        logging.info('update cancelled')
+                    except:
+                        logging.warning('Scheduled event is not in the queue.')
                 del updates[i]
                 break
 
-    for i, each in enumerate(updates):
-        if each['difference']< 60:
-            del news[i]
-            break
- 
     return home()
 
 if __name__ == '__main__':
