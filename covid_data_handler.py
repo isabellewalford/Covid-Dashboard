@@ -15,7 +15,8 @@ from covid_news_handling import update_news
 s = sched.scheduler(time.time, time.sleep)
 
 #Logging
-logging.basicConfig(level = logging.INFO, filename='dashboard.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level = logging.INFO, filename='dashboard.log',
+filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 
 with open('config.json', encoding="utf-8") as json_file:
@@ -35,8 +36,8 @@ def parse_csv_data(csv_filename:str) -> list:
     """
 
     # Opens then file and adds each row to a long list
-    with open(csv_filename,'r') as f:
-        data = f.readlines()
+    with open(csv_filename,'r', encoding ='utf-8') as csv_f:
+        data = csv_f.readlines()
         file = []
         for row in data:
             file.append(row)
@@ -78,8 +79,10 @@ def covid_API_request(location:str = 'Exeter', location_type:str = 'ltla') -> di
     Requests data and from the official covid API and ouputs a dictionary.
 
     Arguments:
-    location -- location of the data that is to be requested. Default is Exeter
-    location_type -- the type of area input into the loaction argument, can be ltla, utla and nation.
+    location -- location of the data that is to be requested.
+    Default is Exeter
+    location_type -- the type of area input into the loaction argument,
+    can be ltla, utla and nation.
     Default is ltla which is the location type for exeter.
 
     Returns:
@@ -138,18 +141,20 @@ def update_data() -> tuple:
     process_json_data -- function that is previously defined
     """
 
-    local_data= process_json_data(covid_API_request(location=config_data['local_area'], location_type= config_data['area_type']))
-    national_data= process_json_data(covid_API_request(location=config_data['national_area'], location_type= 'nation'))
+    local_data= process_json_data(covid_API_request(location=config_data['local_area'],
+    location_type= config_data['area_type']))
+    national_data= process_json_data(covid_API_request(location=config_data['national_area'],
+    location_type= 'nation'))
     logging.info('Data updated')
 
     return local_data, national_data
 
-def find_difference(time:str)-> int:
+def find_difference(time_str:str)-> int:
     """
     finds the difference in an imput time and the current time
 
     Arguments:
-    time -- any time in the format hh:mm
+    time_str -- any time in the format hh:mm
 
     Returns:
     int -- returns the time difference between a given time and the current time
@@ -157,11 +162,11 @@ def find_difference(time:str)-> int:
     #converts current time to seconds
     current_time = datetime.datetime.now()
     hou = current_time.hour
-    min = current_time.minute
-    current = hou*60*60 + min*60
+    mins = current_time.minute
+    current = hou*60*60 + mins*60
 
     #converts update time to seconds
-    hours, mins = time.split(":")
+    hours, mins = time_str.split(":")
     update = (int(hours)*60*60)+(int(mins)*60)
 
     #checks if it was scheduled for a time before the current time
@@ -172,25 +177,25 @@ def find_difference(time:str)-> int:
         difference = difference + 24*60*60
     return difference
 
-def remove_dict(update:dict, li:list) -> list:
+def remove_dict(update:dict, updates_list:list) -> list:
     """
     removes a dictionary from a given list
 
     Arguments:
     update -- an dictionary
-    li -- any list containing the dictionary
+    updates_list -- any list containing the dictionary
 
     Returns:
     int -- returns the time difference between a given time and the current time
     """
 
     name = update['title']
-    for i, each in enumerate(li):
+    for i, each in enumerate(updates_list):
         if each['title'] == name:
-            del li[i]
+            del updates_list[i]
             logging.info('Update removed')
             break
-    return list
+    return updates_list
 
 def add_update(info:dict)-> list:
     """

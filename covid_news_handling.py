@@ -8,7 +8,8 @@ import requests
 from flask import Markup
 
 #Logging
-logging.basicConfig(level = logging.INFO, filename='dashboard.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level = logging.INFO,
+filename='dashboard.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 
 with open('config.json', encoding="utf-8") as json_file:

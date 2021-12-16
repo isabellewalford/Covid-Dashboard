@@ -22,7 +22,8 @@ news = add_read_more(news)
 local_data,national_data = update_data()
 
 #Logging
-logging.basicConfig(level = logging.INFO, filename='dashboard.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level = logging.INFO, filename='dashboard.log',
+filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 @app.route('/')
 def home()-> str:
