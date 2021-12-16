@@ -43,7 +43,7 @@ def update_news()-> list:
     news_API_request -- function that returns data from the news API.
     """
     news = news_API_request('Covid COVID-19 coronavirus')['articles']
-    logging.debug('News updated')
+    logging.info('News updated')
     if len(news) == 0:
         logging.warning('No news found')
     return news

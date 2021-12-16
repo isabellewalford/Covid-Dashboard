@@ -140,7 +140,7 @@ def update_data() -> tuple:
 
     local_data= process_json_data(covid_API_request(location=config_data['local_area'], location_type= config_data['area_type']))
     national_data= process_json_data(covid_API_request(location=config_data['national_area'], location_type= 'nation'))
-    logging.debug('Data updated')
+    logging.info('Data updated')
 
     return local_data, national_data
 
@@ -222,7 +222,6 @@ def schedule_covid_updates(update_interval:int,update_name:list)-> list:
     """
 
     if update_data is not list:
-        logging.warning('test is being run')
         update_name = updates
 
     for i, each in enumerate(update_name):
@@ -235,17 +234,17 @@ def schedule_covid_updates(update_interval:int,update_name:list)-> list:
                 each['event'].append(event)
                 event = s.enter(update_interval,1,update_news)
                 each['event'].append(event)
-                logging.info('Both update scheduled')
+                logging.debug('Both update scheduled')
 
             elif each['data'] == 'covid-data':
                 event = s.enter(update_interval,1,update_data)
                 each['event'].append(event)
-                logging.info('Data update scheduled')
+                logging.debug('Data update scheduled')
 
             elif each['news'] == 'news':
                 event = s.enter(update_interval,1,update_news)
                 each['event'].append(event)
-                logging.info('News update scheduled')
+                logging.debug('News update scheduled')
 
             else:
                 del update_name[i]

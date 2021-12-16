@@ -1,14 +1,24 @@
-urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): newsapi.org:443
-urllib3.connectionpool - DEBUG - https://newsapi.org:443 "GET /v2/everything?q=covid&covid-19&coronavirus&sortBy=popularity&language=en&apiKey=a6e3776831c24877b485c73134df8722 HTTP/1.1" 200 None
-root - DEBUG - News Requested
-root - DEBUG - News updated
-urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.coronavirus.data.gov.uk:443
-urllib3.connectionpool - DEBUG - https://api.coronavirus.data.gov.uk:443 "GET /v1/data?filters=areaType%3Dltla%3BareaName%3DExeter&structure=%7B%22date%22%3A%22date%22%2C%22areaName%22%3A%22areaName%22%2C%22newCasesByPublishDate%22%3A%22newCasesByPublishDate%22%2C%22cumDeaths28DaysByPublishDate%22%3A%22cumDeaths28DaysByPublishDate%22%2C%22hospitalCases%22%3A%22hospitalCases%22%7D&format=json&page=1 HTTP/1.1" 200 None
-urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.coronavirus.data.gov.uk:443
-urllib3.connectionpool - DEBUG - https://api.coronavirus.data.gov.uk:443 "GET /v1/data?filters=areaType%3Dltla%3BareaName%3DExeter&structure=%7B%22date%22%3A%22date%22%2C%22areaName%22%3A%22areaName%22%2C%22newCasesByPublishDate%22%3A%22newCasesByPublishDate%22%2C%22cumDeaths28DaysByPublishDate%22%3A%22cumDeaths28DaysByPublishDate%22%2C%22hospitalCases%22%3A%22hospitalCases%22%7D&format=json&page=2 HTTP/1.1" 204 0
-urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.coronavirus.data.gov.uk:443
-urllib3.connectionpool - DEBUG - https://api.coronavirus.data.gov.uk:443 "GET /v1/data?filters=areaType%3Dnation%3BareaName%3DEngland&structure=%7B%22date%22%3A%22date%22%2C%22areaName%22%3A%22areaName%22%2C%22newCasesByPublishDate%22%3A%22newCasesByPublishDate%22%2C%22cumDeaths28DaysByPublishDate%22%3A%22cumDeaths28DaysByPublishDate%22%2C%22hospitalCases%22%3A%22hospitalCases%22%7D&format=json&page=1 HTTP/1.1" 200 None
-urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.coronavirus.data.gov.uk:443
-urllib3.connectionpool - DEBUG - https://api.coronavirus.data.gov.uk:443 "GET /v1/data?filters=areaType%3Dnation%3BareaName%3DEngland&structure=%7B%22date%22%3A%22date%22%2C%22areaName%22%3A%22areaName%22%2C%22newCasesByPublishDate%22%3A%22newCasesByPublishDate%22%2C%22cumDeaths28DaysByPublishDate%22%3A%22cumDeaths28DaysByPublishDate%22%2C%22hospitalCases%22%3A%22hospitalCases%22%7D&format=json&page=2 HTTP/1.1" 204 0
-root - DEBUG - Data updated
 werkzeug - INFO -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:20:16] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:20:16] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - WARNING - test is being run
+root - INFO - Data update scheduled
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:20:24] "GET /index?update=00%3A22&two=fuck&covid-data=covid-data HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:20:24] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:21:24] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:21:24] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:21] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:21] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:23] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:23] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - INFO - Update removed
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:26] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:22:26] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
+root - WARNING - test is being run
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:23:28] "GET /index HTTP/1.1" 200 -
+werkzeug - INFO - 127.0.0.1 - - [16/Dec/2021 00:23:28] "[36mGET /static/images/me_and_olivia.jpg HTTP/1.1[0m" 304 -
