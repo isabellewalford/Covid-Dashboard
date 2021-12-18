@@ -225,6 +225,7 @@ def schedule_covid_updates(update_interval:int,update_name:list)-> list:
     Returns:
     list -- list of any scheduled updates
     """
+    global updates
 
     if update_data is not list:
         update_name = updates
