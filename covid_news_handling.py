@@ -43,6 +43,8 @@ def update_news()-> list:
     Arguments:
     news_API_request -- function that returns data from the news API.
     """
+    global news
+
     news = news_API_request('Covid COVID-19 coronavirus')['articles']
     logging.info('News updated')
     if len(news) == 0:

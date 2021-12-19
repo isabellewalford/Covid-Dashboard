@@ -134,6 +134,7 @@ def process_json_data(covid_API_data:json) -> list:
     return values
 
 def update_data() -> tuple:
+    global local_data, national_data
     """
     Assigns values to the variables for local and national data to update them from the covid API.
 
