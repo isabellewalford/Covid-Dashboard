@@ -10,7 +10,7 @@ import datetime
 import json
 import logging
 from uk_covid19 import Cov19API
-from global_var import updates
+from global_var import updates, news, local_data, national_data
 from covid_news_handling import update_news
 s = sched.scheduler(time.time, time.sleep)
 
@@ -226,13 +226,11 @@ def schedule_covid_updates(update_interval:int,update_name:list)-> list:
     Returns:
     list -- list of any scheduled updates
     """
-    global updates
-
-    if update_data is not list:
-        update_name = updates
+    global updates, news, local_data, national_data
 
     for i, each in enumerate(update_name):
         update_interval = each['difference']
+
         if each['scheduler'] is True:
             logging.debug('Scheduler is True.')
 
@@ -242,31 +240,34 @@ def schedule_covid_updates(update_interval:int,update_name:list)-> list:
                 event = s.enter(update_interval,1,update_news)
                 each['event'].append(event)
                 logging.debug('Both update scheduled')
+                each['scheduler'] = False
 
             elif each['data'] == 'covid-data':
                 event = s.enter(update_interval,1,update_data)
                 each['event'].append(event)
                 logging.debug('Data update scheduled')
+                each['scheduler'] = False
 
             elif each['news'] == 'news':
                 event = s.enter(update_interval,1,update_news)
                 each['event'].append(event)
                 logging.debug('News update scheduled')
+                each['scheduler'] = False
 
             else:
                 del update_name[i]
                 logging.debug('Removed due to data or news not being true')
+                each['scheduler'] = False
 
             event = s.enter(update_interval,1,remove_dict,(each,updates))
             logging.debug('Remove update scheduled')
             each['event'].append(event)
-            each['scheduler'] = False
 
             if each['repeat'] == 'repeat':
                 event = s.enter(24*60*60*60,1,add_update,each)
                 each['event'].append(event)
                 logging.debug('Repeat scheduled to add update')
 
-            s.run(blocking=False)
-
+        each['scheduler'] = False
+    s.run(blocking=False)
     return updates

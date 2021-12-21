@@ -50,8 +50,11 @@ def index()-> str:
     Runs any scheduled events, takes user inputs and
     adds it to the correct data structure or processes it to give an ouput.
     """
-
+    global updates, local_data, national_data, news
     data_s.run(blocking=False)
+    schedule_covid_updates(0,updates)
+    logging.debug('updates should now be scheduled')
+
     if request.args.get('notif'):
         news_story = request.args.get('notif')
         for i, each in enumerate(news):
@@ -79,9 +82,6 @@ def index()-> str:
         }
         updates.append(name)
         logging.debug('Updated appended to list.')
-
-    schedule_covid_updates(0,updates)
-    logging.debug('updates should now be scheduled')
 
     if request.args.get('update_item'):
         item = request.args.get('update_item')
